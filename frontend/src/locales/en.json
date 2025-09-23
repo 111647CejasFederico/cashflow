@@ -1,0 +1,22 @@
+{
+  "LanguageSwitcher": {
+    "en": "English",
+    "es": "Español"
+  },
+  "app": {
+    "welcome": "welcome to CashFlow Manager"
+  },
+  "ui": {
+    "ConfirmDialog": {
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "errors": {
+      "error404": "Page not found.",
+      "error401": "Unauthorized.",
+      "error500": "Internal server error.",
+      "boundaryTitle": "Something went wrong.",
+      "boundaryMessage": "Please try again later."
+    }
+  }
+}
