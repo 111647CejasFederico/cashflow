@@ -1,9 +1,11 @@
-import { readdirSync } from "fs";
-import { Router } from "express";
-import { fileURLToPath } from "node:url";
 import { dirname, extname } from "node:path";
-import registerLog from "../utils/logger.ts";
+import { fileURLToPath } from "node:url";
+
+import { Router } from "express";
+import { readdirSync } from "fs";
+
 import notFound from "../middleware/not-found.ts";
+import registerLog from "../utils/logger.ts";
 
 const log = registerLog("rts/index.ts");
 

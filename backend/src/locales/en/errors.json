@@ -1,1 +1,6 @@
-{ "server": "Server error", "notFound": "Resource not found", "unauthorized": "Unauthorized", "forbidden": "Forbidden" }
+{
+  "server": "Server error",
+  "notFound": "Resource not found",
+  "unauthorized": "Unauthorized",
+  "forbidden": "Forbidden"
+}

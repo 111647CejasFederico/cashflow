@@ -57,7 +57,9 @@ const config: Config = {
       ORIGIN: env.CORS_ORIGIN || "*",
       METHODS: env.CORS_METHODS || "GET,HEAD,PUT,PATCH,POST,DELETE",
       CREDENTIALS: env.CORS_CREDENTIALS === "true",
-      ALLOWEDHEADERS: env.CORS_ALLOWEDHEADERS ? env.CORS_ALLOWEDHEADERS.split(",") : ["Content-Type", "Authorization"],
+      ALLOWEDHEADERS: env.CORS_ALLOWEDHEADERS
+        ? env.CORS_ALLOWEDHEADERS.split(",")
+        : ["Content-Type", "Authorization"],
     },
     HTTPS: {
       KEY: env.HTTPS_KEY || "undefined",

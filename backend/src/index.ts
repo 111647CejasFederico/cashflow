@@ -1,14 +1,15 @@
+import cors from "cors";
+import express, { type Request } from "express";
+import swaggerUI from "swagger-ui-express";
+
 import config from "./config/config.ts";
 import { dbConnection } from "./config/database.ts";
-import registerLog from "./utils/logger.ts";
-import routes from "./routes/index.ts";
-import swaggerSpec from "./config/swagger.ts";
-import cors from "cors";
-import express from "express";
-import swaggerUI from "swagger-ui-express";
 import { i18nMiddleware, initI18n } from "./config/i18n.ts";
-import notFound from "./middleware/not-found.ts";
+import swaggerSpec from "./config/swagger.ts";
 import errorHandler from "./middleware/error-handler.ts";
+import notFound from "./middleware/not-found.ts";
+import routes from "./routes/index.ts";
+import registerLog from "./utils/logger.ts";
 
 const log = registerLog("index.ts");
 const { CORS, PORT, HOST, BASEURL, LIMITOFRESTARS } = config.SV;
@@ -67,12 +68,12 @@ const initServer = async () => {
 
   app.get("/test-i18n", (req, res) => {
     res.json({
-      language: (req as any).language,
-      languages: (req as any).languages,
-      ok_dot: (req as any).t("common.ok"),
-      ok_ns: (req as any).t("common:ok"),
-      nf_dot: (req as any).t("errors.notFound"),
-      nf_ns: (req as any).t("errors:notFound"),
+      language: (req as Request).language,
+      languages: (req as Request).languages,
+      ok_dot: (req as Request).t("common.ok"),
+      ok_ns: (req as Request).t("common:ok"),
+      nf_dot: (req as Request).t("errors.notFound"),
+      nf_ns: (req as Request).t("errors:notFound"),
     });
   });
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));

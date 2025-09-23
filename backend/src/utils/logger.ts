@@ -1,5 +1,5 @@
-import path from "path";
 import * as fs from "fs";
+import path from "path";
 
 type LogType = "error" | "warn" | "info" | "debug" | "ok" | "log";
 
@@ -13,7 +13,7 @@ const ColorsLog = {
   reset: "\x1b[0m",
   underline: "\x1b[4m",
   bold: "\x1b[1m",
-  link: "\x1b[36m", // cyan
+  link: "\x1b[36m",
 };
 
 const IconsLog = {
@@ -28,8 +28,10 @@ const IconsLog = {
 // expresion regular para ubicar URLs en strings
 const URL_RE = /\b((https?:\/\/|www\.)[^\s)]+)\b/gi;
 
-// expresion regular para ubicar lenguaje ANSI en strings
-const ANSI_RE = /\x1b\[[0-9;]*m/g;
+// expresion regular para ubicar lenguaje ANSI en strings (sin control char literal)
+const ESC = String.fromCharCode(27);
+const ANSI_RE = new RegExp(`${ESC}\\[[0-9;]*m`, "g");
+
 const removeAnsi = (s: string) => s.replace(ANSI_RE, "");
 
 const registerLog = (location: string) => {
@@ -43,14 +45,18 @@ const registerLog = (location: string) => {
     const color = ColorsLog[type] || ColorsLog.log;
 
     // consola: reemplazo inline de URLs
-    const coloredMsg = message.replace(URL_RE, (m) => `${ColorsLog.link}${ColorsLog.underline}${m}${ColorsLog.reset}${color}`);
+    const coloredMsg = message.replace(
+      URL_RE,
+      (m) => `${ColorsLog.link}${ColorsLog.underline}${m}${ColorsLog.reset}${color}`
+    );
 
     const toConsole = `${color}${icon} > [${location}] [${type}] ${coloredMsg}${ColorsLog.reset}`;
     const toFile = `[${ts}] [${location}] [${type}] ${message}\n`;
 
     console.log(toConsole);
     fs.appendFile(filePath, removeAnsi(toFile), (err) => {
-      if (err) console.error(`${ColorsLog.error}[logger.ts] fallo al escribir log${ColorsLog.reset}`, err);
+      if (err)
+        console.error(`${ColorsLog.error}[logger.ts] fallo al escribir log${ColorsLog.reset}`, err);
     });
   };
 };

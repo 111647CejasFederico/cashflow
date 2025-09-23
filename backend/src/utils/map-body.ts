@@ -1,4 +1,3 @@
-// src/utils/query.ts
 import type { Request } from "express";
 
 type FieldType = "string" | "number" | "boolean" | undefined;
@@ -6,17 +5,15 @@ type Spec = Record<string, FieldType>;
 
 type Out<S extends Spec> = {
   [K in keyof S]: S[K] extends "string"
-    ? string | undefined
+    ? string | undefined | null
     : S[K] extends "number"
-    ? number | undefined
-    : S[K] extends "boolean"
-    ? boolean | undefined
-    : undefined;
+      ? number | undefined | null
+      : S[K] extends "boolean"
+        ? boolean | undefined | null
+        : unknown;
 };
 
-const pickRaw = (req: Request, k: string): unknown => {
-  return (req.body as any)[k];
-};
+const pickRaw = (req: Request, k: string): unknown => req.body?.[k];
 
 const parse = (raw: unknown, t: FieldType) => {
   if (raw === undefined) return undefined;
@@ -53,9 +50,10 @@ const parse = (raw: unknown, t: FieldType) => {
 };
 
 export const mapBody = <S extends Spec>(req: Request, spec: S): Out<S> => {
-  const out: any = {};
+  const out = {} as Partial<Out<S>>;
   for (const k of Object.keys(spec)) {
-    out[k] = parse(pickRaw(req, k), spec[k]);
+    const key = k as keyof S;
+    out[key] = parse(pickRaw(req, k), spec[key]) as Out<S>[keyof S];
   }
   return out as Out<S>;
 };

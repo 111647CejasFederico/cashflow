@@ -1,4 +1,4 @@
-import type { TFunction, i18n as I18nInstance } from "i18next";
+import type { i18n as I18nInstance, TFunction } from "i18next";
 
 declare global {
   namespace Express {

@@ -1,4 +1,5 @@
-import { Sequelize, type Dialect } from "sequelize";
+import { type Dialect, Sequelize } from "sequelize";
+
 import config from "./config.ts";
 
 const dialect = config.DB.DIALECT;

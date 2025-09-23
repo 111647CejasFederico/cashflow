@@ -1,15 +1,16 @@
 // src/scripts/scan-locales.ts
+import fg from "fast-glob";
 import fs from "fs";
 import path from "path";
-import fg from "fast-glob";
 
-type Dict = Record<string, any>;
+type Dict = Record<string, unknown>;
 
 const LOCALES_ROOT = path.resolve("src/locales");
 const LANGS = ["es", "en"];
 const SRC_GLOB = ["src/**/*.{ts}", "!src/locales/**", "!src/scripts/**"];
 
-const readJSON = (p: string): Dict => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : {});
+const readJSON = (p: string): Dict =>
+  fs.existsSync(p) ? (JSON.parse(fs.readFileSync(p, "utf8")) as Dict) : {};
 const writeJSON = (p: string, obj: Dict) => {
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, JSON.stringify(obj, null, 2) + "\n");
@@ -24,7 +25,7 @@ const ensurePath = (root: Dict, dotted: string) => {
     const last = i === parts.length - 1;
     if (!k) continue;
     if (!(k in cur)) cur[k] = last ? "" : {};
-    cur = cur[k];
+    cur = cur[k] as Dict;
   }
 };
 
@@ -60,7 +61,9 @@ const ensurePath = (root: Dict, dotted: string) => {
     writeJSON(path.join(LOCALES_ROOT, L, `${ns}.json`), staged[key]);
   }
 
-  console.log(`i18n-scan: ${hits} ocurrencias procesadas, ${Object.keys(staged).length} archivos actualizados.`);
+  console.log(
+    `i18n-scan: ${hits} ocurrencias procesadas, ${Object.keys(staged).length} archivos actualizados.`
+  );
 })().catch((e) => {
   console.error(e);
   process.exit(1);

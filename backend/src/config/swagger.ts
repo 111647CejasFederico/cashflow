@@ -1,5 +1,5 @@
-import swaggerJSDoc from "swagger-jsdoc";
 import { resolve } from "path";
+import swaggerJSDoc from "swagger-jsdoc";
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -10,7 +10,10 @@ const options: swaggerJSDoc.Options = {
       description: "Auto-generated Swagger docs",
     },
   },
-  apis: [resolve(process.cwd(), "src/routes/**/*.ts"), resolve(process.cwd(), "src/types/api-responses/**/*.ts")],
+  apis: [
+    resolve(process.cwd(), "src/routes/**/*.ts"),
+    resolve(process.cwd(), "src/types/api-responses/**/*.ts"),
+  ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

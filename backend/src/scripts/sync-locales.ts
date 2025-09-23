@@ -2,12 +2,13 @@
 import fs from "fs";
 import path from "path";
 
-type Dict = Record<string, any>;
+type Dict = Record<string, unknown>;
 
 const LOCALES_ROOT = path.resolve("src/locales");
 const LANGS = ["es", "en"];
 
-const readJSON = (p: string): Dict => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : {});
+const readJSON = (p: string): Dict =>
+  fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : {};
 const writeJSON = (p: string, obj: Dict) => {
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, JSON.stringify(obj, null, 2) + "\n");
@@ -17,7 +18,7 @@ const deepSync = (from: Dict, to: Dict) => {
   for (const k of Object.keys(from)) {
     const v = from[k];
     if (!(k in to)) to[k] = typeof v === "object" && v !== null ? {} : "";
-    if (typeof v === "object" && v !== null) deepSync(v, to[k]);
+    if (typeof v === "object" && v !== null) deepSync(v as Dict, to[k] as Dict);
   }
 };
 
@@ -26,7 +27,8 @@ const deepSync = (from: Dict, to: Dict) => {
   for (const L of LANGS) {
     const dir = path.join(LOCALES_ROOT, L);
     if (!fs.existsSync(dir)) continue;
-    for (const f of fs.readdirSync(dir)) if (f.endsWith(".json")) namespaces.add(path.basename(f, ".json"));
+    for (const f of fs.readdirSync(dir))
+      if (f.endsWith(".json")) namespaces.add(path.basename(f, ".json"));
   }
 
   let updated = 0;
