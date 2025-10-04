@@ -1,3 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-# bun test  # si agregás tests
